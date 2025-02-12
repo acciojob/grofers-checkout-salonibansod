@@ -3,26 +3,34 @@ document.getElementById("getSumBtn").addEventListener("click", function() {
     let total = 0;
 
     prices.forEach(price => {
-        total += parseFloat(price.textContent);
+        let priceValue = parseInt(price.textContent);
+        if (!isNaN(priceValue)) {
+            total += priceValue;
+        }
     });
-
-    // Remove existing total row if already present
-    let existingTotalRow = document.querySelector(".total-row");
-    if (existingTotalRow) {
-        existingTotalRow.remove();
-    }
 
     let table = document.getElementById("groceryTable");
 
-    let totalRow = document.createElement("tr");
-    totalRow.classList.add("total-row");
+    // Check if total row already exists
+    let totalRow = document.querySelector(".total-row");
+    let totalCell;
 
-    let totalCell = document.createElement("td");
-    totalCell.colSpan = 2;
-    totalCell.textContent = "Total Price: " + total;
+    if (totalRow) {
+        // If total row exists, select the cell and update the total price
+        totalCell = totalRow.querySelector("td");
+        totalCell.textContent = "Total Price: " + total;
+    } else {
+        // If total row does not exist, create it and add it to the table
+        totalRow = document.createElement("tr");
+        totalRow.classList.add("total-row");
 
-    totalRow.appendChild(totalCell);
-    table.appendChild(totalRow);
+        totalCell = document.createElement("td");
+        totalCell.colSpan = 2;
+        totalCell.textContent = "Total Price: " + total;
+
+        totalRow.appendChild(totalCell);
+        table.appendChild(totalRow);
+    }
 });
 
 
